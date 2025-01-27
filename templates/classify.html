@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+    <style>
+      body {
+        font-family: "Roboto", sans-serif;
+        background-color: #f8f9fa;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .navbar {
+        background-color: #3c096c !important;
+        padding: 15px 30px;
+      }
+      .navbar-brand {
+        color: white !important;
+      }
+      .nav-link {
+        color: rgb(255, 255, 255); /* Warna teks item navbar */
+        padding: 10px 15px; /* Padding untuk ruang di dalam link */
+        text-decoration: none; /* Menghilangkan garis bawah pada link */
+        transition: background-color 0.3s, color 0.3s; /* Transisi untuk efek halus */
+        border-radius: 15px; /* Radius border melengkung untuk efek tombol */
+      }
+      .nav-link:hover {
+        background-color: #240046; /* Warna latar belakang saat di-hover */
+        color: white; /* Warna teks saat di-hover */
+      }
+      .navbar-collapse {
+        display: flex;
+        justify-content: center;
+        flex-grow: 1;
+      }
+      .navbar-nav {
+        display: flex;
+        gap: 15px;
+      }
+      .hero {
+        background-color: #7b2cbf;
+        color: white;
+        padding: 70px 0;
+        text-align: center;
+      }
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+      .card {
+        transition: transform 0.2s;
+        border: none;
+      }
+      .card:hover {
+        transform: scale(1.05);
+      }
+      .footer {
+        background-color: #3c096c;
+        color: white;
+        padding: 20px 0;
+        text-align: center;
+      }
+      .card-img-top {
+        height: 300px;
+        object-fit: cover;
+      }
+      .container {
+        padding: 20px;
+        flex: 1;
+      }
+      .btn-custom {
+        background-color: #240046 !important; /* Ubah warna latar belakang */
+        border-color: #e7fbb4 !important; /* Ubah warna border untuk konsistensi */
+        color: rgb(255, 255, 255); /* Ubah warna teks jika diperlukan */
+      }
+      .btn-custom:hover {
+        background-color: #9d4edd !important; /* Warna saat hover, jika diinginkan */
+        border-color: #d6e6a4 !important; /* Ubah warna border saat hover */
+        color: rgb(255, 255, 255); /* Ubah warna teks saat hover, jika diperlukan */
+      }
+    </style>
+    <script>
+      function previewImage(event) {
+        const image2 = document.getElementById("uploadedImageCol2");
+        const classificationResult = document.getElementById("classificationResult");
+
+        // Bersihkan hasil klasifikasi sebelumnya
+        classificationResult.innerHTML = "";
+
+        const file = event.target.files[0];
+        const reader = new FileReader();
+
+        reader.onload = function (e) {
+          // Tampilkan gambar yang diunggah di kolom kedua
+          image2.src = e.target.result;
+          image2.style.display = "block"; // Pastikan gambar ditampilkan
+        };
+
+        if (file) {
+          reader.readAsDataURL(file);
+        }
+      }
+
+      // Bersihkan hasil klasifikasi sebelum formulir dikirim
+      function clearResultsBeforeSubmit() {
+        const classificationResult = document.getElementById("classificationResult");
+        classificationResult.innerHTML = "";
+        return true;
+      }
+    </script>
+    <title>Klasifikasi</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-expand-lg">
+      <a class="navbar-brand" href="/">Klasifikasi Penyakit Daun Kentang</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/about">Biografi Pengembang</a></li>
+          <li class="nav-item"><a class="nav-link" href="/classify">Klasifikasi</a></li>
+          <li class="nav-item"><a class="nav-link" href="/info">Info Aplikasi</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Kontak Kami</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <h1>Klasifikasi Penyakit Daun Kentang</h1>
+    </div>
+
+    <div class="container mt-5">
+      <div class="row mt-4">
+        <!-- Kolom Pertama untuk Unggah -->
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-body text-center">
+              <h4 class="card-title text-primary">Unggah dan Klasifikasi</h4>
+              <p class="card-text">Pilih gambar daun Kentang, dan hasilnya akan ditampilkan.</p>
+              <form method="POST" enctype="multipart/form-data" action="/classify" onsubmit="return clearResultsBeforeSubmit();">
+                <div class="form-group">
+                  <label for="imageUpload" class="font-weight-bold d-block">
+                    <i class="fas fa-upload fa-2x text-success mb-2"></i>
+                    <br />Unggah Gambar Daun Kentang
+                  </label>
+                  <input type="file" name="file" accept="image/*" required class="form-control" id="imageUpload" onchange="previewImage(event)" />
+                </div>
+                <button type="submit" class="btn btn-custom btn-block mt-3 shadow-sm">
+                  <i class="fas fa-search mr-2"></i>
+                  Tampilkan Hasil Klasifikasi
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <!-- Kolom Kedua untuk Hasil Klasifikasi -->
+        <div class="col-md-6">
+          <div class="card shadow">
+            <div class="card-body">
+              <h4 class="card-title text-secondary text-center">Pratinjau dan Hasil Klasifikasi</h4>
+              <div class="d-flex align-items-start mb-4">
+                <img
+                  id="uploadedImageCol2"
+                  class="img-fluid"
+                  alt="Uploaded Image"
+                  style="width: 200px; height: auto; margin-right: 20px; display: 
+                   {% if filename or uploaded_image %}
+                       block
+                   {% else %}
+                       none
+                   {% endif %};"
+                  src="{% if filename or uploaded_image %}{{ uploaded_image_url }}{% endif %}"
+                />
+                <div class="flex-grow-1">
+                  <div id="classificationResult">
+                    {% if filename %}
+                    <h5 class="text-success">Hasil Klasifikasi:</h5>
+                    <h3 class="text-primary">{{ result }}</h3>
+                    <h6><i class="fas fa-check-circle text-success"></i> Confidence: {{ confidence }}</h6>
+                    <h6 class="mt-3">Probabilitas untuk semua kelas:</h6>
+                    <ul class="list-unstyled">
+                      {% for i in range(probabilities|length) %}
+                      <li class="mb-1"><i class="fas fa-chart-bar text-primary"></i> {{ class_labels[i] }}: {{ probabilities[i] | round(4) * 100 }}%</li>
+                      {% endfor %}
+                    </ul>
+                    {% else %}
+                    <h5 class="text-danger">Silakan unggah gambar.</h5>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Font Awesome untuk ikon -->
+    <!-- Font Awesome untuk ikon -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/js/all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+    <footer class="footer mt-auto py-3">
+      <div class="container">
+        <span>&copy; 2024 Klasifikasi Penyakit Daun Kentang. All Rights Reserved.</span>
+      </div>
+    </footer>
+  </body>
+</html>
